@@ -30,7 +30,7 @@ chmod +x /usr/local/bin/bt-autoconnect.sh
 ```
 
 
-## Quran and Athan setup
+# Quran and Athan setup
 
 
 
