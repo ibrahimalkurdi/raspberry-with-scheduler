@@ -7,8 +7,10 @@ Quran and Athan scheduler
 ###########################
 
 ### Enable SSH
+```code
 echo 'dtoverlay=dwc2' >> /boot/firmware/config.txt
 echo 'modules-load=dwc2,g_ether' >> /boot/firmware/cmdline.txt
+```
 
 ### reconnect to paired speaker after reboot
 # Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
