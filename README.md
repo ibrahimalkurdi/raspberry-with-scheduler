@@ -7,9 +7,9 @@ echo 'dtoverlay=dwc2' >> /boot/firmware/config.txt
 echo 'modules-load=dwc2,g_ether' >> /boot/firmware/cmdline.txt
 ```
 
-##### reconnect to paired speaker after reboot
+### reconnect to paired speaker after reboot
 
-Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
+##### Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
 
 ```code
 cat <<EOF >> /usr/local/bin/bt-autoconnect.sh
