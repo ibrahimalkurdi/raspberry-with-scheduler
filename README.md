@@ -261,17 +261,17 @@ sudo systemctl start athan.service
 export QURAN_CRON_JOB="${QURAN_SCHEDULE_TIME} bash -x ${QURAN_CONFIG}/play_quran.sh >|${QURAN_LOGS}/quran.log 2>&1"
 
 
-# Add the cron job if it is not already there
+# [run quran daily]: Add the cron job if it is not already there
 ( crontab -l 2>/dev/null | grep -F "$QURAN_CRON_JOB" ) || \
 ( crontab -l 2>/dev/null; echo "$QURAN_CRON_JOB" ) | crontab -
 
 
-# Add the cron job if it is not already there
+# [daily log retention for athan log file]: Add the cron job if it is not already there
 ( crontab -l 2>/dev/null | grep -F "00 00 * * * echo "" > ${ATHAN_LOGS}/athan_scheduler.log" ) || \
 ( crontab -l 2>/dev/null; echo "00 00 * * * echo "" > ${ATHAN_LOGS}/athan_scheduler.log" ) | crontab -
 
 
-# Add the cron job if it is not already there
+# [daily log retention for athan execution event file]: Add the cron job if it is not already there
 ( crontab -l 2>/dev/null | grep -F "00 00 * * * echo '[]' > ${ATHAN_CONFIG}/executed_events.json" ) || \
 ( crontab -l 2>/dev/null; echo "00 00 * * * echo '[]' > ${ATHAN_CONFIG}/executed_events.json" ) | crontab -
 ```
