@@ -1,18 +1,13 @@
-# raspberry-with-scheduler
-Quran and Athan scheduler
+# Raspberry init ssh setup
 
 
-
-## Raspberry init ssh setup
-
-
-#### Enable SSH
+## Enable SSH
 ```code
 echo 'dtoverlay=dwc2' >> /boot/firmware/config.txt
 echo 'modules-load=dwc2,g_ether' >> /boot/firmware/cmdline.txt
 ```
 
-### reconnect to paired speaker after reboot
+##### reconnect to paired speaker after reboot
 
 Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
 
@@ -35,11 +30,11 @@ chmod +x /usr/local/bin/bt-autoconnect.sh
 ```
 
 
-### Quran and Athan setup
+## Quran and Athan setup
 
 
 
-####  General setup:
+### General setup:
 
 ```code
 export HOME_DIR="/home/ihms"
@@ -74,7 +69,7 @@ touch "${ATHAN_LOGS}/athan_scheduler.log"
 ```
 
 
-#### Scripts setup:
+### Scripts setup:
 
 ```code
 cat <<EOF >> $QURAN_CONFIG/play_quran.sh
@@ -256,7 +251,7 @@ EOF
 chmod +x ${ATHAN_CONFIG}/athan_scheduler.py
 ```
 
-#### Set the schedulers:
+### Set the schedulers:
 
 ```code
 sudo systemctl daemon-reload
