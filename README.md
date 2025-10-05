@@ -68,6 +68,7 @@ touch "${ATHAN_LOGS}/athan_scheduler.log"
 # Ensure the athan time file existed under this directory ${ATHAN_CONFIG}
 # This is the time file format example:
 # tail berlin_prayer_times.csv
+# month,day,Fajr time,Sunraise, Dhr, Asr, mgreb, Isha 
 # 12,22,06:06,08:08,12:10,13:41,16:01,17:47
 # 12,23,06:06,08:09,12:11,13:42,16:01,17:47
 ```
