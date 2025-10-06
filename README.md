@@ -51,7 +51,6 @@ export QURAN_SCHEDULE_TIME='30 06 * * *'
 ```
 
 ```code
-mkdir -p $SCHEDULER_SCRIPTS_DIR
 mkdir -p $ATHAN_DIR
 mkdir -p $QURAN_DIR
 mkdir -p $ATHAN_AUDIO
