@@ -97,12 +97,12 @@ cat <<EOF >> $ATHAN_CONFIG/play_athan.sh
 # Kill any existing VLC process before starting
 pkill -9 -f "vlc"
 
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
-export PULSE_SERVER=unix:/run/user/$(id -u)/pulse/native
-DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_AUDIO}/*.mp3 || exit 0
+export XDG_RUNTIME_DIR=/run/user/1000
+export PULSE_SERVER=unix:/run/user/1000/pulse/native
+DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus timeout 180 cvlc -I dummy --play-and-exit /home/ihms/scheduler/athan/audio/*.mp3
 
 # Ensure it is terminated in case it got stuck
-pkill -9 -f "vlc"
+pkill -9 -f "vlc" || true
 EOF
 ```
 
