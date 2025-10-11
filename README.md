@@ -79,10 +79,17 @@ touch "${ATHAN_LOGS}/athan_scheduler.log"
 cat <<EOF >> $QURAN_CONFIG/play_quran.sh
 #!/bin/bash
 
-killall vlc
+# Kill any existing VLC process before starting
+pkill -9 -f "vlc"
+
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export PULSE_SERVER=unix:/run/user/$(id -u)/pulse/native
-DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus cvlc ${QURAN_AUDIO}/*.mp3
+DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus \
+cvlc --intf dummy --no-video --play-and-exit ${QURAN_AUDIO}/*.mp3
+
+
+# Ensure it is terminated in case it got stuck
+pkill -9 -f "vlc" || true
 EOF
 ```
 
