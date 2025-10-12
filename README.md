@@ -67,7 +67,7 @@ touch "${ATHAN_LOGS}/athan_scheduler.log"
 # Ensure the athan time file existed under this directory ${ATHAN_CONFIG}
 # This is the time file format example:
 # tail berlin_prayer_times.csv
-# month,day,Fajr time,Sunraise, Dhr, Asr, mgreb, Isha 
+# Month,Day,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha
 # 12,22,06:06,08:08,12:10,13:41,16:01,17:47
 # 12,23,06:06,08:09,12:11,13:42,16:01,17:47
 ```
@@ -191,15 +191,13 @@ class AthanScheduler:
         for _, row in df.iterrows():
             month = int(row['Month'])
             day = int(row['Day'])
-            for label in ['Early Light', 'Sunrise', 'Noon', 'Afternoon', 'Evening', 'Night']:
+            for label in ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']:
                 if label.lower() == 'sunrise':
                     continue  # skip executing at sunrise
                 time_str = str(row[label]).strip()
                 if not time_str or time_str.lower() == 'nan':
                     continue
 
-            # for label in ['Early Light','Sunrise','Noon','Afternoon','Evening','Night']:
-            #     time_str = row[label]
                 dt = datetime.strptime(f"{year}-{month:02d}-{day:02d} {time_str}",
                                        "%Y-%m-%d %H:%M")
                 self.schedule.append({
