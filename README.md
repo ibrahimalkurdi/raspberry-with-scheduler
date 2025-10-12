@@ -106,6 +106,7 @@ cat <<EOF >> $ATHAN_CONFIG/play_athan.sh
 PRAYER_NAME="$1"
 CURRENT_HOUR=$(date +%H)
 
+
 # Kill any existing VLC process before starting
 pkill -9 -f "vlc"
 
@@ -113,9 +114,11 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export PULSE_SERVER=unix:/run/user/$(id -u)/pulse/native
 
 if [[ "${PRAYER_NAME,,}" == 'fajr' || "$CURRENT_HOUR" -ge 22 ]]; then
-	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_FAJR_AUDIO}/*.mp3
-else	
-	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_AUDIO}/*.mp3
+	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus \
+	cvlc --intf dummy --no-video --play-and-exit ${ATHAN_FAJR_AUDIO}/*.mp3
+else
+	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus \
+	cvlc --intf dummy --no-video --play-and-exit ${ATHAN_AUDIO}/*.mp3
 fi
 
 # Ensure it is terminated in case it got stuck
