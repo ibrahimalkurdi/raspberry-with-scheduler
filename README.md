@@ -112,7 +112,7 @@ pkill -9 -f "vlc"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export PULSE_SERVER=unix:/run/user/$(id -u)/pulse/native
 
-if [[ "${PRAYER_NAME,,}" == 'fajr' && "$CURRENT_HOUR" -ge 22 ]]; then
+if [[ "${PRAYER_NAME,,}" == 'fajr' || "$CURRENT_HOUR" -ge 22 ]]; then
 	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_FAJR_AUDIO}/*.mp3
 else	
 	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_AUDIO}/*.mp3
