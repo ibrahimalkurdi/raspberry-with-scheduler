@@ -106,7 +106,6 @@ cat <<EOF >> $ATHAN_CONFIG/play_athan.sh
 PRAYER_NAME="$1"
 CURRENT_HOUR=$(date +%H)
 
-
 # Kill any existing VLC process before starting
 pkill -9 -f "vlc"
 
