@@ -42,6 +42,7 @@ export SCHEDULER_DIR="${HOME_DIR}/scheduler"
 export ATHAN_DIR="${SCHEDULER_DIR}/athan"
 export QURAN_DIR="${SCHEDULER_DIR}/quran"
 export ATHAN_AUDIO="${ATHAN_DIR}/audio"
+export ATHAN_FAJR_AUDIO="${ATHAN_DIR}/audio/fajr"
 export QURAN_AUDIO="${QURAN_DIR}/audio"
 export ATHAN_CONFIG="${ATHAN_DIR}/config"
 export QURAN_CONFIG="${QURAN_DIR}/config"
@@ -54,6 +55,7 @@ export QURAN_SCHEDULE_TIME='30 06 * * *'
 mkdir -p $ATHAN_DIR
 mkdir -p $QURAN_DIR
 mkdir -p $ATHAN_AUDIO
+mkdir -p $ATHAN_FAJR_AUDIO
 mkdir -p $QURAN_AUDIO
 mkdir -p $ATHAN_CONFIG
 mkdir -p $QURAN_CONFIG
@@ -101,12 +103,19 @@ chmod +x $QURAN_CONFIG/play_quran.sh
 cat <<EOF >> $ATHAN_CONFIG/play_athan.sh
 #!/bin/bash
 
+PRAYER_NAME="$1"
+
 # Kill any existing VLC process before starting
 pkill -9 -f "vlc"
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export PULSE_SERVER=unix:/run/user/$(id -u)/pulse/native
-DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_AUDIO}/*.mp3 || exit 0
+
+if [[ "${PRAYER_NAME,,}" == 'fajr' ]]; then
+	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_FAJR_AUDIO}/*.mp3
+else	
+	DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 180 cvlc -I dummy --play-and-exit ${ATHAN_AUDIO}/*.mp3
+fi
 
 # Ensure it is terminated in case it got stuck
 pkill -9 -f "vlc" || true
