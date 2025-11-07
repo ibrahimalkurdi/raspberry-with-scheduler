@@ -35,7 +35,7 @@ EOF
 ```
 
 ```code
-chmod +x /usr/local/bin/bt-autoconnect.sh
+sudo chmod +x /usr/local/bin/bt-autoconnect.sh
 ```
 
 ```code
