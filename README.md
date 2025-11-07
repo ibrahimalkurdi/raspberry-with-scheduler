@@ -3,8 +3,22 @@
 
 ## Enable SSH
 ```code
-echo 'dtoverlay=dwc2' >> /boot/firmware/config.txt
-echo 'modules-load=dwc2,g_ether' >> /boot/firmware/cmdline.txt
+cd /boot/firmware
+echo 'dtoverlay=dwc2' >> ./config.txt
+echo 'modules-load=dwc2,g_ether' >> ./cmdline.txt
+```
+
+## Enable ELECROW 7 Inch HDMI Touchscreen Monitor
+https://www.elecrow.com/download/product/DIS78950R/7_inch_HDMI_touchscreen_monitor_user_manual.pdf?srsltid=AfmBOooSWo0WnD30zQw_URRowO0aCE8X3MtZUtwk8LRfGRsv59t8UXvt
+```code
+cd /boot/firmware
+echo 'hdmi_force_hotplug=1' >> ./config.txt
+echo 'max_usb_current=1' >> ./config.txt
+echo 'hdmi_group=2' >> ./config.txt
+echo 'hdmi_mode=1' >> ./config.txt
+echo 'hdmi_mode=87' >> ./config.txt
+echo 'hdmi_cvt 1024 600 60 6 0 0 0' >> ./config.txt
+echo 'hdmi_drive=2' >> ./config.txt
 ```
 
 ## Reconnect to paired speaker after reboot
