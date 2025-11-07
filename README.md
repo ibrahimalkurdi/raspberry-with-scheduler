@@ -26,7 +26,7 @@ echo 'hdmi_drive=2' >> ./config.txt
 ##### Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
 
 ```code
-cat <<EOF >> /usr/local/bin/bt-autoconnect.sh
+sudo cat <<EOF >> /usr/local/bin/bt-autoconnect.sh
 #!/bin/bash
 bluetoothctl << BLUETOOTHEOF
 connect AA:BB:CC:DD:EE:FF
