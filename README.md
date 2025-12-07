@@ -1,14 +1,14 @@
-# Raspberry init ssh setup
+## Raspberry init ssh setup
 
 
-## Enable SSH
+### Enable SSH
 ```code
 cd /boot/firmware
 echo 'dtoverlay=dwc2' >> ./config.txt
 echo 'modules-load=dwc2,g_ether' >> ./cmdline.txt
 ```
 
-## Enable ELECROW 7 Inch HDMI Touchscreen Monitor
+### Enable ELECROW 7 Inch HDMI Touchscreen Monitor
 https://www.elecrow.com/download/product/DIS78950R/7_inch_HDMI_touchscreen_monitor_user_manual.pdf?srsltid=AfmBOooSWo0WnD30zQw_URRowO0aCE8X3MtZUtwk8LRfGRsv59t8UXvt
 ```code
 cd /boot/firmware
