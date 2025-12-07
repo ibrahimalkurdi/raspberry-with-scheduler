@@ -20,9 +20,40 @@ echo 'hdmi_mode=87' >> ./config.txt
 echo 'hdmi_cvt 1024 600 60 6 0 0 0' >> ./config.txt
 echo 'hdmi_drive=2' >> ./config.txt
 ```
-## Update & Upgrade OS, Bluetooth setup, install required python package:
+## Update & Upgrade OS and disable WIFI powersaving optoin:
 ```
 sudo apt update && sudo apt upgrade -y
+```
+Create wifi-powersave-off script for servicectl
+```
+sudo cat << EOD > /etc/systemd/system/wifi-powersave-off.service
+[Unit]
+Description=Disable wlan0 powersave
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/iw dev wlan0 set power_save off
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+Enable and start the service
+```
+sudo systemctl daemon-reload
+sudo systemctl enable wifi-powersave-off.service
+sudo systemctl start wifi-powersave-off.service
+```
+check:
+```
+sudo systemctl status wifi-powersave-off.service
+iwconfig
+```
+
+## Bluetooth setup, install required python package:
+```
 sudo apt install -y pi-bluetooth bluez blueman
 
 sudo systemctl enable bluetooth
