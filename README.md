@@ -20,8 +20,40 @@ echo 'hdmi_mode=87' >> ./config.txt
 echo 'hdmi_cvt 1024 600 60 6 0 0 0' >> ./config.txt
 echo 'hdmi_drive=2' >> ./config.txt
 ```
+## Update & Upgrade OS, Bluetooth setup, install required python package:
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y pi-bluetooth bluez blueman
 
-## Reconnect to paired speaker after reboot
+sudo systemctl enable bluetooth
+sudo systemctl start bluetooth
+sudo systemctl status bluetooth
+
+
+bluetoothctl list
+
+
+sudo rfkill list all
+sudo rfkill unblock bluetooth
+sudo rfkill list
+
+sudo hciconfig hci0 up
+
+
+bluetoothctl
+
+power on
+agent on
+default-agent
+scan on
+pair 08:EB:ED:05:62:A3 # replace it with bluetooh MAC ID
+trust 08:EB:ED:05:62:A3 # replace it with bluetooh MAC ID
+connect 08:EB:ED:05:62:A3 # replace it with bluetooh MAC ID
+
+sudo apt-get install python3-pandas
+```
+
+## Reconnect to the paired bluetooth speaker after OS reboot
 
 ##### Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
 
