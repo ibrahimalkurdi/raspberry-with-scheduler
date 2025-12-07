@@ -347,6 +347,12 @@ export QURAN_CRON_JOB="${QURAN_SCHEDULE_TIME} bash -x ${QURAN_CONFIG}/play_quran
 # Touch Screen Athan & Quran setup:
 Build initial script to create athan desktop icon and run it in the reboot
 
+```
+Note:
+To execute the athan desktop script by clicking on the icon, it needs this change:
+From the Desktop GUI, click on: Raspberry icon -> Accessories -> File Manager -> Edit -> Preferences -> (check this box) Don't ask options on launch executable file
+```
+
 ### Init Vars:
 ```
 export HOME_DIR="/home/ihms/Desktop"
