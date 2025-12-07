@@ -353,6 +353,7 @@ export HOME_DIR="/home/ihms/Desktop"
 export SCHEDULER_DIR="${HOME_DIR}/scheduler"
 export SCRIPTS_DIR="${SCHEDULER_DIR}/scripts"
 mkdir -p "$SCRIPTS_DIR"
+```
 
 ### Build up the script:
 ```
@@ -416,8 +417,6 @@ ln -s "$SCRIPTS_DIR/athan.desktop" "$HOME/.config/autostart/athan.desktop"
 mkdir -p "$HOME/Desktop"
 rm -f "$HOME/Desktop/athan.desktop"
 ln -s "$SCRIPTS_DIR/athan.desktop" "$HOME/Desktop/athan.desktop"
-
-
 
 echo "✓ Athan installed successfully."
 echo "✓ Script created at $SCRIPTS_DIR/athan_start.sh"
