@@ -328,6 +328,7 @@ sudo systemctl start athan.service
 export QURAN_CRON_JOB="${QURAN_SCHEDULE_TIME} bash -x ${QURAN_CONFIG}/play_quran.sh >|${QURAN_LOGS}/quran.log 2>&1"
 
 
+
 # [run quran daily]: Add the cron job if it is not already there
 ( crontab -l 2>/dev/null | grep -F "$QURAN_CRON_JOB" ) || \
 ( crontab -l 2>/dev/null; echo "$QURAN_CRON_JOB" ) | crontab -
@@ -341,4 +342,94 @@ export QURAN_CRON_JOB="${QURAN_SCHEDULE_TIME} bash -x ${QURAN_CONFIG}/play_quran
 # [daily log retention for athan execution event file]: Add the cron job if it is not already there
 ( crontab -l 2>/dev/null | grep -F "00 00 * * * echo '[]' > ${ATHAN_CONFIG}/executed_events.json" ) || \
 ( crontab -l 2>/dev/null; echo "00 00 * * * echo '[]' > ${ATHAN_CONFIG}/executed_events.json" ) | crontab -
+```
+
+# Touch Screen Athan & Quran setup:
+Build initial script to create athan desktop icon and run it in the reboot
+
+### Init Vars:
+```
+export HOME_DIR="/home/ihms/Desktop"
+export SCHEDULER_DIR="${HOME_DIR}/scheduler"
+export SCRIPTS_DIR="${SCHEDULER_DIR}/scripts"
+mkdir -p "$SCRIPTS_DIR"
+
+### Build up the script:
+```
+cat << EOF > $SCRIPTS_DIR/install_athan_desktop.sh
+#!/bin/bash
+
+### 1) Create scheduler directory and the athan_start script
+cat << 'EOD' > "$SCRIPTS_DIR/athan_start.sh"
+#!/bin/bash
+
+# Wait until localhost is reachable
+while ! curl -s http://localhost >/dev/null; do
+    sleep 1
+done
+
+# Remove HSTS file (extra safety)
+rm -f ~/.mozilla/firefox/*.default*/SiteSecurityServiceState.txt
+
+# Kill Firefox if running
+pkill firefox
+
+# Start clean Firefox on HTTP
+firefox --private-window --no-remote --new-instance "http://localhost"
+EOD
+
+chmod +x "$SCRIPTS_DIR/athan_start.sh"
+
+
+### 2) Create the real athan.desktop inside script directory
+
+cat << 'EOD' > "$SCRIPTS_DIR/athan.desktop"
+[Desktop Entry]
+Type=Application
+Name=Athan Display
+Comment=Open local Athan page
+Exec=$SCRIPTS_DIR/athan_start.sh
+Icon=web-browser
+Terminal=false
+Categories=Utility;
+EOD
+
+chmod +x "$SCRIPTS_DIR/athan.desktop"
+
+
+### 3) Create symlink in ~/.local/share/applications
+
+mkdir -p "$HOME/.local/share/applications"
+rm -f "$HOME/.local/share/applications/athan.desktop"
+ln -s "$SCRIPTS_DIR/athan.desktop" "$HOME/.local/share/applications/athan.desktop"
+
+
+### 4) Create symlink in ~/.config/autostart
+
+mkdir -p "$HOME/.config/autostart"
+rm -f "$HOME/.config/autostart/athan.desktop"
+ln -s "$SCRIPTS_DIR/athan.desktop" "$HOME/.config/autostart/athan.desktop"
+
+
+### 5) Create symlink on Desktop (no popup)
+
+mkdir -p "$HOME/Desktop"
+rm -f "$HOME/Desktop/athan.desktop"
+ln -s "$SCRIPTS_DIR/athan.desktop" "$HOME/Desktop/athan.desktop"
+
+
+
+echo "✓ Athan installed successfully."
+echo "✓ Script created at $SCRIPTS_DIR/athan_start.sh"
+echo "✓ Desktop Entry stored at $SCRIPTS_DIR/athan.desktop"
+echo "✓ Symlink added to ~/.local/share/applications/athan.desktop (menu entry)"
+echo "✓ Symlink added to ~/.config/autostart/athan.desktop (autostart enabled)"
+echo "✓ Symlink added to ~/Desktop/athan.desktop (no-popup launcher)"
+EOF
+```
+
+### Execute the script
+```
+chmod +x $SCRIPT_DIR/install_athan.sh
+bash $SCRIPT_DIR/install_athan.sh
 ```
