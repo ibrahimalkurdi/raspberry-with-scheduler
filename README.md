@@ -84,7 +84,7 @@ connect 08:EB:ED:05:62:A3 # replace it with bluetooh MAC ID
 sudo apt-get install python3-pandas
 ```
 
-## Reconnect to the paired bluetooth speaker after OS reboot
+### Reconnect to the paired bluetooth speaker after OS reboot
 
 ##### Note: Replace AA:BB:CC:DD:EE:FF with the paired speaker bluetooth mac address
 
