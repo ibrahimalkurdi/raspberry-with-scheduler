@@ -1,0 +1,23 @@
+FROM php:8.2-fpm-alpine
+
+RUN apk add --no-cache nginx bash tzdata \
+    && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
+    && echo "Europe/Berlin" > /etc/timezone
+
+ENV TZ=Europe/Berlin
+
+
+# Copy our Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy PHP files
+#COPY index.php berlin_prayer_times.csv /var/www/html/
+COPY index.html prayer_times_js_map.list /var/www/html/
+
+# Start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+EXPOSE 80
+CMD ["/start.sh"]
+

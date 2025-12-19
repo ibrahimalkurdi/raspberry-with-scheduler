@@ -1,0 +1,14 @@
+[Unit]
+Description=Athan Prayer Scheduler
+After=network.target sound.target
+
+[Service]
+User=ihms
+WorkingDirectory=/home/ihms/Desktop/scheduler/athan
+ExecStart=/usr/bin/python3 /home/ihms/Desktop/scheduler/athan/config/athan_scheduler.py
+Restart=always
+StandardOutput=append:/home/ihms/Desktop/scheduler/athan/logs/athan_scheduler.log
+StandardError=append:/home/ihms/Desktop/scheduler/athan/logs/athan_scheduler.log
+
+[Install]
+WantedBy=multi-user.target
