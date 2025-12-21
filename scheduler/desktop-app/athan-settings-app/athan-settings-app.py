@@ -51,7 +51,6 @@ DEFAULTS_BOOL = {
 PRAYER_PREFIX = "enable_prayer_"
 PRAYER_TIMES = [
     ("fajr", "الفجر"),
-    ("sunrise", "الشروق"),
     ("dhuhr", "الظهر"),
     ("asr", "العصر"),
     ("maghrib", "المغرب"),
@@ -149,7 +148,7 @@ class ControlApp(QMainWindow):
         self.cron_frame = self.create_section_frame("توقيت قراءة سور مختارة من القرآن الكريم")
         cron_layout = self.cron_frame.layout()
 
-        self.cron_chk = QCheckBox("تفعيل جدول قراءة القرآن")
+        self.cron_chk = QCheckBox("تفعيل جدولة قراءة القرآ ن الكريم")
         self.cron_chk.setChecked(self.config["Settings"].getboolean(CRON_ENABLE))
         self.cron_chk.setStyleSheet("font-size: 22px; padding: 5px;")
         self.cron_chk.setLayoutDirection(Qt.RightToLeft)  # Only for the checkbox text
@@ -172,7 +171,7 @@ class ControlApp(QMainWindow):
         cron_form.setFormAlignment(Qt.AlignRight)   # Align the whole form to right
 
         # Comment / section title
-        comment_lbl = QLabel("تحديد وقت قراءة المختارات من القرآن الكريم")
+        comment_lbl = QLabel(" تحديد وقت قراءة المختارات من القرآن الكريم يوميا")
         comment_lbl.setStyleSheet("font-size: 20px; font-weight: bold;")
 
         # Wrap label in a horizontal layout
@@ -194,7 +193,7 @@ class ControlApp(QMainWindow):
         btn_layout = QVBoxLayout()
         btn_layout.setSpacing(15)
         save_btn = QPushButton("حفظ الإعدادات")
-        restart_btn = QPushButton("إعادة تشغيل التطبيق")
+        restart_btn = QPushButton("تفعيل الإعدادت وإعادة تشغيل البرامج")
         close_btn = QPushButton("إغلاق")
 
         # Button styling
