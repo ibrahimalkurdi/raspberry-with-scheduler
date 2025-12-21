@@ -152,6 +152,12 @@ class AdhanCounter(QWidget):
             self.setStyleSheet("background:#808080;color:white;")
             return
 
+        # 🔹 CHANGE TITLE BASED ON PRAYER
+        if next_p == "الشروق":
+            self.title.setText("الوقت المتبقي ل ")
+        else:
+            self.title.setText("الوقت المتبقي لأذان")
+
         remaining = int((next_t - now).total_seconds())
         hours = remaining // 3600
         minutes = (remaining % 3600) // 60

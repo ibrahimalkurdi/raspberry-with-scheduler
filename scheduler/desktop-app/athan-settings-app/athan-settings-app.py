@@ -10,6 +10,8 @@ from PyQt5.QtWidgets import (
     QLabel,
     QPushButton,
     QVBoxLayout,
+    QHBoxLayout,
+    QBoxLayout,
     QMessageBox,
     QSpinBox,
     QCheckBox,
@@ -46,6 +48,19 @@ DEFAULTS_BOOL = {
     CRON_ENABLE: True,
 }
 
+PRAYER_PREFIX = "enable_prayer_"
+PRAYER_TIMES = [
+    ("fajr", "الفجر"),
+    ("sunrise", "الشروق"),
+    ("dhuhr", "الظهر"),
+    ("asr", "العصر"),
+    ("maghrib", "المغرب"),
+    ("isha", "العشاء"),
+]
+
+for key, _ in PRAYER_TIMES:
+    DEFAULTS_BOOL[f"{PRAYER_PREFIX}{key}"] = True
+
 # ---------------- Main App ----------------
 class ControlApp(QMainWindow):
     def __init__(self):
@@ -70,10 +85,29 @@ class ControlApp(QMainWindow):
         main_layout.setContentsMargins(30, 30, 30, 30)
 
         # ---------------- Title ----------------
-        title = QLabel(" إعدادات البرامج ")
+        title = QLabel(" الإعدادت ")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 32px; font-weight: bold;")
         main_layout.addWidget(title)
+
+        # ---------------- Prayer Times Section ----------------
+        self.prayer_frame = self.create_section_frame("ضبط الأذان")
+        prayer_layout = self.prayer_frame.layout()
+
+        self.prayer_checkboxes = {}
+
+        for key, arabic_name in PRAYER_TIMES:
+            cfg_key = f"{PRAYER_PREFIX}{key}"
+
+            chk = QCheckBox(f"تفعيل صوت أذان {arabic_name}")
+            chk.setChecked(self.config["Settings"].getboolean(cfg_key))
+            chk.setStyleSheet("font-size: 22px; padding: 5px;")
+            chk.setLayoutDirection(Qt.RightToLeft)
+
+            prayer_layout.addWidget(chk)
+            self.prayer_checkboxes[cfg_key] = chk
+
+        main_layout.addWidget(self.prayer_frame)
 
         # ---------------- Tahajjud Section ----------------
         self.tahajjud_frame = self.create_section_frame("صلاة التهجد")
@@ -112,13 +146,13 @@ class ControlApp(QMainWindow):
         main_layout.addWidget(self.duha_frame)
 
         # ---------------- Cron Section ----------------
-        self.cron_frame = self.create_section_frame("جدولة قراءة القرآن")
+        self.cron_frame = self.create_section_frame("توقيت قراءة سور مختارة من القرآن الكريم")
         cron_layout = self.cron_frame.layout()
 
         self.cron_chk = QCheckBox("تفعيل جدول قراءة القرآن")
         self.cron_chk.setChecked(self.config["Settings"].getboolean(CRON_ENABLE))
         self.cron_chk.setStyleSheet("font-size: 22px; padding: 5px;")
-        self.cron_chk.setLayoutDirection(Qt.RightToLeft)
+        self.cron_chk.setLayoutDirection(Qt.RightToLeft)  # Only for the checkbox text
         cron_layout.addWidget(self.cron_chk)
 
         # Load cron job
@@ -134,9 +168,26 @@ class ControlApp(QMainWindow):
         self.cron_min_spin = self.create_spinbox(minute_val, 0, 59)
 
         cron_form = QFormLayout()
+        cron_form.setLabelAlignment(Qt.AlignRight)  # Force labels right
+        cron_form.setFormAlignment(Qt.AlignRight)   # Align the whole form to right
+
+        # Comment / section title
+        comment_lbl = QLabel("تحديد وقت قراءة المختارات من القرآن الكريم")
+        comment_lbl.setStyleSheet("font-size: 20px; font-weight: bold;")
+
+        # Wrap label in a horizontal layout
+        comment_layout = QHBoxLayout()
+        comment_layout.setDirection(QBoxLayout.RightToLeft)  # Force RTL
+        comment_layout.addWidget(comment_lbl)
+        cron_form.addRow(comment_layout)  # Add layout as a row
+
+        # Spinbox rows
         self.add_spinbox_row(cron_form, "الساعة", self.cron_hour_spin)
         self.add_spinbox_row(cron_form, "الدقيقة", self.cron_min_spin)
-        cron_layout.addLayout(cron_form)
+
+        # Add the QFormLayout to the frame layout
+        cron_layout.addLayout(cron_form)  # <-- Correct: addLayout, not addWidget
+
         main_layout.addWidget(self.cron_frame)
 
         # ---------------- Buttons ----------------
@@ -280,6 +331,10 @@ class ControlApp(QMainWindow):
         s[DUHA_ENABLE] = str(self.duha_chk.isChecked())
         s[DUHA_TIME] = str(self.duha_spin.value())
         s[CRON_ENABLE] = str(self.cron_chk.isChecked())
+
+        for key, chk in self.prayer_checkboxes.items():
+            s[key] = str(chk.isChecked())
+
         if self.cron_chk.isChecked():
             s["quran_cron_job"] = f"{self.cron_min_spin.value():02d} {self.cron_hour_spin.value():02d} * * *"
         else:
