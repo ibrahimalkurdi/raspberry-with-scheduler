@@ -18,7 +18,9 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QSizePolicy,
     QFormLayout,
-    QFrame
+    QFrame,
+    QListWidget,
+    QListWidgetItem
 )
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QFontMetrics
@@ -26,6 +28,7 @@ from PyQt5.QtGui import QFont, QFontMetrics
 # ---------------- Paths ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(BASE_DIR, "config.ini")
+QURAN_AUDIO_DIR = "/home/ihms/Desktop/scheduler/quran/audio/"  # Set your path here
 
 # ---------------- Defaults ----------------
 TAHAJJUD_ENABLE = "enable_tahajjud_prayer"
@@ -151,7 +154,7 @@ class ControlApp(QMainWindow):
         self.cron_chk = QCheckBox("تفعيل جدولة قراءة القرآ ن الكريم")
         self.cron_chk.setChecked(self.config["Settings"].getboolean(CRON_ENABLE))
         self.cron_chk.setStyleSheet("font-size: 22px; padding: 5px;")
-        self.cron_chk.setLayoutDirection(Qt.RightToLeft)  # Only for the checkbox text
+        self.cron_chk.setLayoutDirection(Qt.RightToLeft)
         cron_layout.addWidget(self.cron_chk)
 
         # Load cron job
@@ -167,25 +170,39 @@ class ControlApp(QMainWindow):
         self.cron_min_spin = self.create_spinbox(minute_val, 0, 59)
 
         cron_form = QFormLayout()
-        cron_form.setLabelAlignment(Qt.AlignRight)  # Force labels right
-        cron_form.setFormAlignment(Qt.AlignRight)   # Align the whole form to right
+        cron_form.setLabelAlignment(Qt.AlignRight)
+        cron_form.setFormAlignment(Qt.AlignRight)
 
-        # Comment / section title
         comment_lbl = QLabel(" تحديد وقت قراءة المختارات من القرآن الكريم يوميا")
         comment_lbl.setStyleSheet("font-size: 20px; font-weight: bold;")
 
-        # Wrap label in a horizontal layout
         comment_layout = QHBoxLayout()
-        comment_layout.setDirection(QBoxLayout.RightToLeft)  # Force RTL
+        comment_layout.setDirection(QBoxLayout.RightToLeft)
         comment_layout.addWidget(comment_lbl)
-        cron_form.addRow(comment_layout)  # Add layout as a row
+        cron_form.addRow(comment_layout)
 
-        # Spinbox rows
         self.add_spinbox_row(cron_form, "الساعة", self.cron_hour_spin)
         self.add_spinbox_row(cron_form, "الدقيقة", self.cron_min_spin)
 
-        # Add the QFormLayout to the frame layout
-        cron_layout.addLayout(cron_form)  # <-- Correct: addLayout, not addWidget
+        cron_layout.addLayout(cron_form)
+
+        # -------- NEW: Quran audio list --------
+        files_label = QLabel("اختر السور التي سيتم تشغيلها:")
+        files_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+
+        self.quran_audio_list = self.create_checkable_audio_list(QURAN_AUDIO_DIR)
+
+        # Load checked state from config
+        self.load_quran_audio_checked_state()
+
+        cron_layout.addWidget(files_label)
+        cron_layout.addWidget(self.quran_audio_list)
+
+        # Enable / Disable list with cron checkbox
+        self.quran_audio_list.setEnabled(self.cron_chk.isChecked())
+        self.cron_chk.stateChanged.connect(
+            lambda state: self.quran_audio_list.setEnabled(state == Qt.Checked)
+        )
 
         main_layout.addWidget(self.cron_frame)
 
@@ -259,6 +276,49 @@ class ControlApp(QMainWindow):
         self.setup_checkbox_link(self.cron_chk, self.cron_min_spin)
 
     # ---------------- Helpers ----------------
+    def create_checkable_audio_list(self, directory):
+        list_widget = QListWidget()
+        list_widget.setFixedHeight(220)
+        list_widget.setLayoutDirection(Qt.RightToLeft)
+        list_widget.setStyleSheet("""
+            QListWidget {
+                font-size: 20px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+            }
+        """)
+
+        if not os.path.isdir(directory):
+            item = QListWidgetItem("❌ مجلد الملفات غير موجود")
+            item.setFlags(Qt.NoItemFlags)
+            list_widget.addItem(item)
+            return list_widget
+
+        for fname in sorted(f for f in os.listdir(directory) if f.lower().endswith(".mp3")):
+            item = QListWidgetItem(fname)
+            item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+            item.setCheckState(Qt.Unchecked)
+            list_widget.addItem(item)
+
+        return list_widget
+
+    def load_quran_audio_checked_state(self):
+        """Load checked state from config.ini"""
+        checked_files = self.config["Settings"].get("quran_audio_checked", "")
+        checked_set = set(f.strip() for f in checked_files.split(",") if f.strip())
+        for i in range(self.quran_audio_list.count()):
+            item = self.quran_audio_list.item(i)
+            if item.text() in checked_set:
+                item.setCheckState(Qt.Checked)
+
+    def save_quran_audio_checked_state(self):
+        checked_files = []
+        for i in range(self.quran_audio_list.count()):
+            item = self.quran_audio_list.item(i)
+            if item.checkState() == Qt.Checked:
+                checked_files.append(item.text())
+        self.config["Settings"]["quran_audio_checked"] = ",".join(checked_files)
+
     def create_section_frame(self, title):
         frame = QFrame()
         frame.setFrameShape(QFrame.StyledPanel)
@@ -308,9 +368,9 @@ class ControlApp(QMainWindow):
 
     def setup_checkbox_link(self, checkbox, spinbox):
         spinbox.setEnabled(checkbox.isChecked())
-        def update_state(state):
-            spinbox.setEnabled(state == Qt.Checked)
-        checkbox.stateChanged.connect(update_state)
+        checkbox.stateChanged.connect(
+            lambda s: spinbox.setEnabled(s == Qt.Checked)
+        )
 
     # ---------------- Config ----------------
     def load_config(self):
@@ -322,6 +382,7 @@ class ControlApp(QMainWindow):
         for k, v in DEFAULTS_BOOL.items():
             self.config["Settings"].setdefault(k, str(v))
         self.config["Settings"].setdefault("quran_cron_job", DEFAULT_CRON)
+        self.config["Settings"].setdefault("quran_audio_checked", "")
 
     def save_settings(self):
         s = self.config["Settings"]
@@ -338,8 +399,13 @@ class ControlApp(QMainWindow):
             s["quran_cron_job"] = f"{self.cron_min_spin.value():02d} {self.cron_hour_spin.value():02d} * * *"
         else:
             s["quran_cron_job"] = ""
+
+        # Save checked Quran audio files
+        self.save_quran_audio_checked_state()
+
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             self.config.write(f)
+
         QMessageBox.information(self, "تم الحفظ", "تم حفظ الإعدادات بنجاح")
 
     def restart_app(self):
