@@ -34,6 +34,12 @@ QURAN_AUDIO_DIR = "/home/ihms/Desktop/scheduler/quran/audio/"  # Set your path h
 TAHAJJUD_ENABLE = "enable_tahajjud_prayer"
 TAHAJJUD_TIME = "tahajjud_time"
 
+ATHKAR_ELSABAH_ENABLE = "enable_athkar_elsabah"
+ATHKAR_ELSABAH_TIME = "athkar_elsabah_time"
+
+ATHKAR_ELMASA_ENABLE = "enable_athkar_elmasa"
+ATHKAR_ELMASA_TIME = "athkar_elmasa_time"
+
 DUHA_ENABLE = "enable_duha_prayer"
 DUHA_TIME = "duha_time"
 
@@ -42,13 +48,18 @@ DEFAULT_CRON = "30 06 * * *"
 
 DEFAULTS_INT = {
     TAHAJJUD_TIME: 20,
-    DUHA_TIME: 6,
+    DUHA_TIME: 60,
+    ATHKAR_ELSABAH_TIME: 120,
+    ATHKAR_ELMASA_TIME: 240,
+
 }
 
 DEFAULTS_BOOL = {
     TAHAJJUD_ENABLE: True,
     DUHA_ENABLE: True,
     CRON_ENABLE: True,
+    ATHKAR_ELSABAH_ENABLE: True,
+    ATHKAR_ELMASA_ENABLE: True,
 }
 
 PRAYER_PREFIX = "enable_prayer_"
@@ -62,6 +73,7 @@ PRAYER_TIMES = [
 
 for key, _ in PRAYER_TIMES:
     DEFAULTS_BOOL[f"{PRAYER_PREFIX}{key}"] = True
+
 
 # ---------------- Main App ----------------
 class ControlApp(QMainWindow):
@@ -147,6 +159,42 @@ class ControlApp(QMainWindow):
         duha_layout.addLayout(duha_form)
         main_layout.addWidget(self.duha_frame)
 
+        # ---------------- ATHKAR ALSABAH Section ----------------
+        self.athkar_elsabah_frame = self.create_section_frame("أذكار الصباح")
+        athkar_elsabah_layout = self.athkar_elsabah_frame.layout()
+
+        self.athkar_elsabah_chk = QCheckBox("تفعيل أذكار الصباح")
+        self.athkar_elsabah_chk.setChecked(self.config["Settings"].getboolean(ATHKAR_ELSABAH_ENABLE))
+        self.athkar_elsabah_chk.setStyleSheet("font-size: 22px; padding: 5px;")
+        self.athkar_elsabah_chk.setLayoutDirection(Qt.RightToLeft)
+        athkar_elsabah_layout.addWidget(self.athkar_elsabah_chk)
+
+        self.athkar_elsabah_spin = self.create_spinbox(
+            self.config["Settings"].get(ATHKAR_ELSABAH_TIME, DEFAULTS_INT[ATHKAR_ELSABAH_TIME])
+        )
+        athkar_elsabah_form = QFormLayout()
+        self.add_spinbox_row(athkar_elsabah_form, "وقت أذكار الصباح بعد صلاة الفجر (دقيقة)", self.athkar_elsabah_spin)
+        athkar_elsabah_layout.addLayout(athkar_elsabah_form)
+        main_layout.addWidget(self.athkar_elsabah_frame)
+
+        # ---------------- ATHKAR ELMASA Section ----------------
+        self.athkar_elmasa_frame = self.create_section_frame("أذكار المساء")
+        athkar_elmasa_layout = self.athkar_elmasa_frame.layout()
+
+        self.athkar_elmasa_chk = QCheckBox("تفعيل أذكار المساء")
+        self.athkar_elmasa_chk.setChecked(self.config["Settings"].getboolean(ATHKAR_ELMASA_ENABLE))
+        self.athkar_elmasa_chk.setStyleSheet("font-size: 22px; padding: 5px;")
+        self.athkar_elmasa_chk.setLayoutDirection(Qt.RightToLeft)
+        athkar_elmasa_layout.addWidget(self.athkar_elmasa_chk)
+
+        self.athkar_elmasa_spin = self.create_spinbox(
+            self.config["Settings"].get(ATHKAR_ELMASA_TIME, DEFAULTS_INT[ATHKAR_ELMASA_TIME])
+        )
+        athkar_elmasa_form = QFormLayout()
+        self.add_spinbox_row(athkar_elmasa_form, "وقت أذكار المساء بعد صلاة المغرب (دقيقة)", self.athkar_elmasa_spin)
+        athkar_elmasa_layout.addLayout(athkar_elmasa_form)
+        main_layout.addWidget(self.athkar_elmasa_frame)
+
         # ---------------- Cron Section ----------------
         self.cron_frame = self.create_section_frame("توقيت قراءة سور مختارة من القرآن الكريم")
         cron_layout = self.cron_frame.layout()
@@ -173,7 +221,7 @@ class ControlApp(QMainWindow):
         cron_form.setLabelAlignment(Qt.AlignRight)
         cron_form.setFormAlignment(Qt.AlignRight)
 
-        comment_lbl = QLabel(" تحديد وقت قراءة المختارات من القرآن الكريم يوميا")
+        comment_lbl = QLabel(" تحديد وقت قراءة المختارات من القرآن الكريم يوميا:")
         comment_lbl.setStyleSheet("font-size: 20px; font-weight: bold;")
 
         comment_layout = QHBoxLayout()
@@ -261,7 +309,7 @@ class ControlApp(QMainWindow):
         # ---------------- Increase form label fonts ----------------
         label_font = QFont()
         label_font.setPointSize(16)
-        for layout in [tahajjud_form, duha_form, cron_form]:
+        for layout in [tahajjud_form, duha_form, athkar_elsabah_form, athkar_elmasa_form, cron_form]:
             for i in range(layout.rowCount()):
                 item = layout.itemAt(i, QFormLayout.LabelRole)
                 if item:
@@ -272,6 +320,8 @@ class ControlApp(QMainWindow):
         # ---------------- Link checkboxes to spinboxes ----------------
         self.setup_checkbox_link(self.tahajjud_chk, self.tahajjud_spin)
         self.setup_checkbox_link(self.duha_chk, self.duha_spin)
+        self.setup_checkbox_link(self.athkar_elsabah_chk, self.athkar_elsabah_spin)
+        self.setup_checkbox_link(self.athkar_elmasa_chk, self.athkar_elmasa_spin)
         self.setup_checkbox_link(self.cron_chk, self.cron_hour_spin)
         self.setup_checkbox_link(self.cron_chk, self.cron_min_spin)
 
@@ -390,6 +440,10 @@ class ControlApp(QMainWindow):
         s[TAHAJJUD_TIME] = str(self.tahajjud_spin.value())
         s[DUHA_ENABLE] = str(self.duha_chk.isChecked())
         s[DUHA_TIME] = str(self.duha_spin.value())
+        s[ATHKAR_ELSABAH_ENABLE] = str(self.athkar_elsabah_chk.isChecked())
+        s[ATHKAR_ELSABAH_TIME] = str(self.athkar_elsabah_spin.value())
+        s[ATHKAR_ELMASA_ENABLE] = str(self.athkar_elmasa_chk.isChecked())
+        s[ATHKAR_ELMASA_TIME] = str(self.athkar_elmasa_spin.value())
         s[CRON_ENABLE] = str(self.cron_chk.isChecked())
 
         for key, chk in self.prayer_checkboxes.items():
@@ -418,4 +472,3 @@ if __name__ == "__main__":
     window = ControlApp()
     window.showMaximized()
     sys.exit(app.exec_())
-
