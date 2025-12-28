@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Athan Display
-Comment=Open local Athan page
-Exec=/home/ihms/Desktop/scheduler/script/athan_start.sh
-Icon=web-browser
-Terminal=false
-Categories=Utility;
