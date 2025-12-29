@@ -20,7 +20,7 @@ ln -s scheduler/config/scheduler_settings_gui.desktop ./
 cd -
 
 echo "copy icons for Desktop applications..."
-cp ~/Desktop/scheduler/config/icons/athan-*.png /usr/share/icons/hicolor/48x48/apps/
+sudo cp ~/Desktop/scheduler/config/icons/athan-*.png /usr/share/icons/hicolor/48x48/apps/
 sudo gtk-update-icon-cache /usr/share/icons/hicolor
 
 echo "Enable and start audio_event_scheduler.service"
@@ -30,6 +30,7 @@ sudo systemctl enable audio_event_scheduler.service
 sudo systemctl start audio_event_scheduler.service
 
 echo "Set scheduler_settings_gui.desktop as an autostart application..."
+mkdir -p ~/.config/autostart/
 cd ~/.config/autostart/
 ln -s ~/Desktop/scheduler/config/prayer_times_gui.desktop ./
 cd -
