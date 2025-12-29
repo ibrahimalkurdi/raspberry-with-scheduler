@@ -31,5 +31,5 @@ sudo systemctl start audio_event_scheduler.service
 
 echo "Set scheduler_settings_gui.desktop as an autostart application..."
 cd ~/.config/autostart/
-ln -s ~/Desktop/scheduler/config/scheduler_settings_gui.desktop ./
+ln -s ~/Desktop/scheduler/config/prayer_times_gui.desktop ./
 cd -
