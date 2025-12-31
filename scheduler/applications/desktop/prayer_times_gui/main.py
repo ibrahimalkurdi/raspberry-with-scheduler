@@ -1,8 +1,11 @@
 import sys
 from datetime import datetime, timedelta
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QLabel, QVBoxLayout, QPushButton,
+    QGraphicsView, QGraphicsScene, QGraphicsProxyWidget
+)
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QTransform
 from prayer_times_map import prayerTimes  # your Python prayer times file
 
 # -------------------------
@@ -94,21 +97,48 @@ class AdhanCounter(QWidget):
 
         self.layout.addWidget(self.title)
         self.layout.addWidget(self.prayerName)
-        self.layout.addWidget(self.countdown)
+
+        # --------- COUNTDOWN VERTICAL SCALE (ONLY CHANGE) ---------
+        self.countdown.setFont(QFont("Lateef", 190, QFont.Bold))
+        self.countdown.setAttribute(Qt.WA_TranslucentBackground)
+        self.countdown.setStyleSheet("background: transparent; color: white;")
+
+
+        scene = QGraphicsScene(self)
+        proxy = QGraphicsProxyWidget()
+        proxy.setWidget(self.countdown)
+        proxy.setTransform(QTransform().scale(1.0, 1.35))  # vertical only
+
+        view = QGraphicsView(scene)
+        scene.addItem(proxy)
+
+        view.setStyleSheet("background: transparent; border: none;")
+        view.setAlignment(Qt.AlignCenter)
+        view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+
+        self.layout.addWidget(view)
+
+        scene.setBackgroundBrush(Qt.transparent)
+        view.setBackgroundBrush(Qt.transparent)
+        view.setAttribute(Qt.WA_TranslucentBackground)
+        view.setStyleSheet("background: transparent; border: none;")
+
+        # ----------------------------------------------------------
+
         self.setLayout(self.layout)
 
         # Fonts
         self.title.setFont(QFont("Lateef", 40))
         self.prayerName.setFont(QFont("Lateef", 100))
-        self.countdown.setFont(QFont("Lateef",400))
-
 
         # Exit button closes the app
         self.exit_btn = QPushButton("✖", self)
         self.exit_btn.setGeometry(10, 10, 50, 50)
-        self.exit_btn.clicked.connect(QApplication.instance().quit)  # close app
+        self.exit_btn.clicked.connect(QApplication.instance().quit)
         self.exit_btn.show()
-        
+
         # Fullscreen / maximize toggle button
         self.fullscreen_btn = QPushButton("⛶", self)
         self.fullscreen_btn.setGeometry(70, 10, 50, 50)
@@ -122,11 +152,7 @@ class AdhanCounter(QWidget):
             border: none;
             font-size: 30px;
         }
-        QPushButton:hover {
-            color: black;
-        }
         """
-
         self.exit_btn.setStyleSheet(btn_style)
         self.fullscreen_btn.setStyleSheet(btn_style)
 
@@ -136,14 +162,8 @@ class AdhanCounter(QWidget):
         self.timer.timeout.connect(self.update_countdown)
         self.timer.start(1000)
 
-        # Start maximized
-        #self.showMaximized()
-        #self.update_countdown()
-
-        # Start in full screen mode
         self.showFullScreen()
         self.update_countdown()
-
 
     # -------------------------
     # Countdown logic
@@ -157,7 +177,7 @@ class AdhanCounter(QWidget):
             self.setStyleSheet("background:#808080;color:white;")
             return
 
-        # 🔹 CHANGE TITLE BASED ON PRAYER
+        # CHANGE TITLE BASED ON PRAYER
         if next_p == "الشروق":
             self.title.setText("الوقت المتبقي ل ")
         else:
@@ -181,7 +201,7 @@ class AdhanCounter(QWidget):
         elif 0 < remaining <= 1200:
             bg = "#ff0000"
         else:
-            bg = "#808080"
+            bg = "#787878"
 
         self.setStyleSheet(f"background:{bg};color:white;")
 
@@ -194,11 +214,6 @@ class AdhanCounter(QWidget):
         else:
             self.showFullScreen()
 
-    def exit_fullscreen(self):
-        if self.isFullScreen():
-            self.showMaximized()
-            self.exit_fullscreen_btn.hide()
-
     # -------------------------
     # Keyboard shortcuts
     # -------------------------
@@ -206,7 +221,7 @@ class AdhanCounter(QWidget):
         if event.key() == Qt.Key_F11:
             self.toggle_fullscreen()
         elif event.key() == Qt.Key_Escape and self.isFullScreen():
-            self.exit_fullscreen()
+            self.showMaximized()
 
 # -------------------------
 # Run app
@@ -216,4 +231,3 @@ if __name__ == "__main__":
     window = AdhanCounter()
     window.show()
     sys.exit(app.exec_())
-

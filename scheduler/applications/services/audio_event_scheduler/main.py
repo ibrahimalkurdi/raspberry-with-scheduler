@@ -92,6 +92,16 @@ def load_quran_time():
         return None
 
 
+def load_quran_audio_checked():
+    if not os.path.exists(SETTINGS_INI_FILE):
+        return None
+
+    config = configparser.ConfigParser()
+    config.read(SETTINGS_INI_FILE)
+
+    return config["Settings"].get("quran_audio_checked", fallback=None)
+
+
 def log_current_config():
     logger.info("========== Scheduler Configuration ==========")
 
@@ -185,9 +195,6 @@ class AthanScheduler:
             logger.error(f"Prayer map not found: {PRAYER_PYTHON_MAP_FILE}")
             return
 
-        #prayer_globals = {}
-        #with open(PRAYER_PYTHON_MAP_FILE, "r") as f:
-        #    exec(f.read(), {}, prayer_globals)
         prayer_globals = {}
 
         with open(PRAYER_PYTHON_MAP_FILE, "r") as f:
@@ -238,9 +245,12 @@ class AthanScheduler:
                 today = datetime.now().date()
                 dt = datetime.combine(today, quran_time)
 
+                quran_audio = load_quran_audio_checked()
+
                 self.schedule.append({
                     "datetime": dt,
-                    "type": "quran"
+                    "type": "quran",
+                    "audio_list": quran_audio
                 })
 
                 logger.info(f"Scheduled daily Quran at {dt}")
@@ -255,8 +265,13 @@ class AthanScheduler:
             return
 
         try:
+            cmd = [PLAYER_APP_SCRIPT_FILE, event["type"]]
+
+            if event["type"] == "quran" and event.get("audio_list"):
+                cmd.append(event["audio_list"])
+
             subprocess.run(
-                [PLAYER_APP_SCRIPT_FILE, event["type"]],
+                cmd,
                 check=True,
                 cwd=CONFIG_DIR
             )

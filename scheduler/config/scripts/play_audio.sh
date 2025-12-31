@@ -19,6 +19,7 @@ log() {
 # Configuration
 # -------------------------------
 PRAYER_NAME="${1:-}"
+QURAN_AUDIO_MP3_LIST="${2:-}"
 LOCK_FILE="$MAIN_DIR/var/player.lock"
 AUDIO_DIR="$MAIN_DIR/audio"
 VLC_PID=""
@@ -53,6 +54,15 @@ trap cleanup EXIT INT TERM HUP
 if [[ -z "$PRAYER_NAME" ]]; then
     log "Usage: $0 <prayer_name>"
     exit 1
+fi
+
+# -------------------------------
+# Log executed command
+# -------------------------------
+if [[ -n "$QURAN_AUDIO_MP3_LIST" ]]; then
+    log "$PRAYER_NAME \"$QURAN_AUDIO_MP3_LIST\""
+else
+    log "$PRAYER_NAME"
 fi
 
 
@@ -123,12 +133,25 @@ fi
 # -------------------------------
 # Ensure audio files exist
 # -------------------------------
-shopt -s nullglob
-FILES=("$PLAYER_DIR"/*.mp3)
-shopt -u nullglob
+FILES=()
+
+if [[ "$PRAYER_NAME_LOWER" == "quran" && -n "$QURAN_AUDIO_MP3_LIST" ]]; then
+    IFS=',' read -ra AUDIO_NAMES <<< "$QURAN_AUDIO_MP3_LIST"
+
+    for name in "${AUDIO_NAMES[@]}"; do
+        file="$PLAYER_DIR/$(basename "$name")"
+        if [[ "$file" == *.mp3 && -f "$file" ]]; then
+            FILES+=("$file")
+        fi
+    done
+else
+    shopt -s nullglob
+    FILES=("$PLAYER_DIR"/*.mp3)
+    shopt -u nullglob
+fi
 
 if (( ${#FILES[@]} == 0 )); then
-    log "ERROR: No audio files found in $PLAYER_DIR"
+    log "ERROR: No audio files found to play"
     exit 1
 fi
 
@@ -141,4 +164,3 @@ VLC_PID=$!
 
 # Wait until VLC finishes
 wait "$VLC_PID"
-
