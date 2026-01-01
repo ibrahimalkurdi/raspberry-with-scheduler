@@ -26,7 +26,7 @@ sudo apt update && sudo apt upgrade -y
 ```
 Create wifi-powersave-off script for servicectl
 ```
-sudo cat << EOF > /etc/systemd/system/wifi-powersave-off.service
+sudo tee /etc/systemd/system/wifi-powersave-off.service << EOF
 [Unit]
 Description=Disable wlan0 powersave
 After=network-online.target
