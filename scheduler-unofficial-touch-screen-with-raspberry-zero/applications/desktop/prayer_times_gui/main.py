@@ -209,7 +209,6 @@ class AdhanCounter(QWidget):
         else:
             bg = "#787878"  # Gray
         
-
         self.setStyleSheet(f"background:{bg};color:white;")
 
     # -------------------------

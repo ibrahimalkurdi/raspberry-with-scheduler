@@ -276,7 +276,6 @@ class ControlApp(QMainWindow):
 
 
         # ---------------- Tahajjud Section ----------------
-        # self.tahajjud_frame = self.create_sectionself.create_arabic_section_frame("صلاة التهجد")
         self.tahajjud_frame, tahajjud_layout, tahajjud_title = self.create_arabic_section("صلاة التهجد")
 
         tahajjud_layout = self.tahajjud_frame.layout()
@@ -313,7 +312,6 @@ class ControlApp(QMainWindow):
         main_layout.addWidget(self.tahajjud_frame)
 
         # ---------------- Duha Section ----------------
-        # self.duha_frame = self.create_section_frame("صلاة الضحى")
         self.duha_frame, duha_layout, duha_title = self.create_arabic_section("صلاة الضحى")
 
         duha_layout = self.duha_frame.layout()
@@ -348,7 +346,6 @@ class ControlApp(QMainWindow):
         main_layout.addWidget(self.duha_frame)
 
         # ---------------- ATHKAR ALSABAH Section ----------------
-        # self.athkar_elsabah_frame = self.create_section_frame("أذكار الصباح")
         self.athkar_elsabah_frame, athkar_elsabah_layout, athkar_elsabah_title = self.create_arabic_section("أذكار الصباح")
 
         
@@ -386,7 +383,6 @@ class ControlApp(QMainWindow):
         main_layout.addWidget(self.athkar_elsabah_frame)
 
         # ---------------- ATHKAR ELMASA Section ----------------
-        # self.athkar_elmasa_frame = self.create_section_frame("أذكار المساء")
         self.athkar_elmasa_frame, athkar_elmasa_layout, athkar_elmasa_title = self.create_arabic_section("أذكار المساء")
 
         athkar_elmasa_layout = self.athkar_elmasa_frame.layout()
@@ -969,7 +965,6 @@ class ControlApp(QMainWindow):
         spin = QSpinBox()
         spin.setRange(min_val, max_val)
         spin.setValue(int(value))
-
         spin.setFixedHeight(50)
         spin.setStyleSheet("""
             QSpinBox {
@@ -1330,9 +1325,6 @@ class ControlApp(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setFont(QFont("Amiri"))
-
-    # Optional fallback for dialogs
-    app.setWindowIcon(QIcon("/home/ihms/Desktop/scheduler/config/icons/icon-128.png"))
 
     window = ControlApp()
     window.showMaximized()  # Must call setWindowIcon before show()
