@@ -28,7 +28,7 @@ The system supports automatic audio playback for prayers, nawafel, athkar, and Q
     - 🔴 Red background: last 20 minutes before the next prayer
       ![Red Background](assets/red-athan-alert.png)
     - ⚪ Gray background: time between these two periods
-      ![Gray Background](assets/Gray-athan-alert.png)
+      ![Gray Background](assets/gray-athan-alert.png)
 
 - **Scheduler Settings Desktop Application**
   - Allows users to configure:
