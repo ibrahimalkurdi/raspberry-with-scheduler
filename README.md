@@ -46,12 +46,14 @@ Month,Day,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha
 
 ### Sample
 
+```
 Month,Day,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha
 1,1,06:10,08:10,12:15,13:50,16:09,17:55
 1,2,06:10,08:10,12:15,13:51,16:10,17:56
 1,3,06:10,08:10,12:16,13:52,16:11,17:57
 1,4,06:10,08:10,12:16,13:53,16:12,17:58
 ...
+```
 
 Note:
 All non-prayer events (Nawafel, Athkar, and Quran playback) are configured through the Scheduler Settings GUI Desktop Application.
