@@ -94,8 +94,7 @@ The system is built on two main pillars:
 
 ## Getting Started
 
-1. Clone the repository:
-   git clone <repository-url>
+1. Clone this repository
 
 2. Copy one of the scheduler directories to your Raspberry Pi.
 
