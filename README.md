@@ -23,9 +23,9 @@ The system supports automatic audio playback for prayers, nawafel, athkar, and Q
 - **Prayer Time Countdown Desktop Application**
   - Displays a live countdown for the next prayer time.
   - Visual indicators:
-    - Green background: first 20 minutes after the prayer time starts
-    - Red background: last 20 minutes before the next prayer
-    - Gray background: time between these two periods
+    - 🟢 Green background: first 20 minutes after prayer time starts
+    - 🔴 Red background: last 20 minutes before the next prayer
+    - ⚪ Gray background: time between these two periods
 
 - **Scheduler Settings Desktop Application**
   - Allows users to configure:
