@@ -41,8 +41,9 @@ Users can provide custom prayer times using a CSV file.
 This allows the system to work for any country or city.
 
 ### CSV Format
-
+```
 Month,Day,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha
+```
 
 ### Sample
 
