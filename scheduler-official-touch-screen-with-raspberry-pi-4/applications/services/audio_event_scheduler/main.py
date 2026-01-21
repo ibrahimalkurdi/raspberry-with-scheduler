@@ -190,12 +190,12 @@ class AthanScheduler:
                             break  # stop checking once executed
                         time.sleep(1)  # check every second
 
-            # Reload schedule at midnight (Fixed Indentation: Moved inside the while loop)
-            if now.hour == 0 and now.minute == 0 and now.second < 10:
-                self.load_schedule()
-                time.sleep(10)
+        # Reload schedule at midnight
+        if now.hour == 0 and now.minute == 0 and now.second < 10:
+            self.load_schedule()
+            time.sleep(10)
 
-            time.sleep(1)  # check loop every second for high accuracy (Fixed Indentation: Moved inside the while loop)
+        time.sleep(1)  # check loop every second for high accuracy
 
 if __name__ == "__main__":
     AthanScheduler().run()

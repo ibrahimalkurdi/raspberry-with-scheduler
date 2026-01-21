@@ -31,6 +31,11 @@ if [[ ! -z $INPUT_CSV_FILE ]]; then
 	echo "Restart the scheduler App & Desktop scheduler App"
 	sudo systemctl restart audio_event_scheduler.service
 
+	# DESKTOP_APP_PROCESS_ID=$(ps -ef | grep scheduler_settings_gui | grep pyth | awk '{print $2}')
+	# if [[ ! -z $DESKTOP_APP_PROCESS_ID ]]; then
+	# 	echo "Stop Desktop application..."
+	# 	kill $DESKTOP_APP_PROCESS_ID
+	# fi
 else
 	echo "$INPUT_CSV_FILE file is not exsited....."
 fi

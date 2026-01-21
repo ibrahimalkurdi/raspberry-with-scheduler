@@ -100,6 +100,7 @@ class AdhanCounter(QWidget):
         self.layout.addWidget(self.prayerName)
 
         # --------- COUNTDOWN VERTICAL SCALE (ONLY CHANGE) ---------
+        # self.countdown.setFont(QFont("Lateef", 190, QFont.Bold))
         self.countdown.setFont(QFont("Lateef", 160, QFont.Bold))
         self.countdown.setAttribute(Qt.WA_TranslucentBackground)
         self.countdown.setStyleSheet("background: transparent; color: white;")
@@ -108,6 +109,7 @@ class AdhanCounter(QWidget):
         scene = QGraphicsScene(self)
         proxy = QGraphicsProxyWidget()
         proxy.setWidget(self.countdown)
+        # proxy.setTransform(QTransform().scale(1.0, 1.35))  # vertical only
         proxy.setTransform(QTransform().scale(1.0, 1.35))  # vertical only
 
         view = QGraphicsView(scene)
@@ -131,7 +133,9 @@ class AdhanCounter(QWidget):
         self.setLayout(self.layout)
 
         # Fonts
+        # self.title.setFont(QFont("Lateef", 40))
         self.title.setFont(QFont("Lateef", 30))
+        # self.prayerName.setFont(QFont("Lateef", 100))
         self.prayerName.setFont(QFont("Lateef", 70))
 
         # Exit button
@@ -199,14 +203,19 @@ class AdhanCounter(QWidget):
         
         # 1. Green: Post-Athan (except Sunrise itself)
         if 0 <= since_prev <= 1800 and prev_p != "الشروق":
+            #bg = "#00cc00"  # Green
+            #bg = "#007700"  # Darker Green
             bg = "#006600"  # Darker Green
+            #bg = "#003c00" # very dark Green
         
         # 2. Red: Pre-Athan or Sunrise warning
         elif 0 < remaining <= 1200:
+            #bg = "#ff0000"  # Red
             bg = "#990000"  # Darker Red
         
         # 3. Default
         else:
+            #bg = "#787878"  # Gray
             bg = "#333333"  # Darker Gray
         
         self.setStyleSheet(f"background:{bg};color:white;")
