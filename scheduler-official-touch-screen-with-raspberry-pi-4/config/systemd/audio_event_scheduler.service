@@ -1,0 +1,14 @@
+[Unit]
+Description=Audio Event Scheduler
+After=network.target sound.target
+
+[Service]
+User=ihms
+WorkingDirectory=/home/ihms/Desktop/scheduler
+ExecStart=/usr/bin/python3 /home/ihms/Desktop/scheduler/applications/services/audio_event_scheduler/main.py
+Restart=always
+StandardOutput=append:/home/ihms/Desktop/scheduler/logs/audio_event_scheduler.log
+StandardError=append:/home/ihms/Desktop/scheduler/logs/audio_event_scheduler.log
+
+[Install]
+WantedBy=multi-user.target

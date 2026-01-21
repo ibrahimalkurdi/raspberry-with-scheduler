@@ -1,0 +1,21 @@
+
+2026-01-17 05:46:00,009 - INFO - Triggering tahajjud at 2026-01-17 05:46:00.005905
+2026-01-17 05:46:37,356 - INFO - Executed tahajjud with audio: 
+2026-01-17 06:06:00,028 - INFO - Triggering fajr at 2026-01-17 06:06:00.027965
+2026-01-17 06:08:21,173 - INFO - Executed fajr with audio: 
+2026-01-17 06:30:00,004 - INFO - Triggering quran at 2026-01-17 06:30:00.004420
+2026-01-17 08:44:16,619 - INFO - Executed quran with audio: 01-bakar-90.mp3,02-safat-90.mp3,03-eklas-falak-elnas-90.mp3,04-eklas-falak-elnas-90.mp3,05-eklas-falak-elnas-90.mp3
+2026-01-17 10:06:00,010 - INFO - Triggering athkar_elsabah at 2026-01-17 10:06:00.010793
+2026-01-17 10:08:31,308 - INFO - Executed athkar_elsabah with audio: 
+2026-01-17 11:21:00,014 - INFO - Triggering duha at 2026-01-17 11:21:00.014054
+2026-01-17 11:21:00,476 - INFO - Executed duha with audio: 
+2026-01-17 12:21:00,004 - INFO - Triggering dhuhr at 2026-01-17 12:21:00.004608
+2026-01-17 12:23:21,224 - INFO - Executed dhuhr with audio: 
+2026-01-17 14:08:00,022 - INFO - Triggering asr at 2026-01-17 14:08:00.022626
+2026-01-17 14:10:21,152 - INFO - Executed asr with audio: 
+2026-01-17 16:31:00,008 - INFO - Triggering maghrib at 2026-01-17 16:31:00.008261
+2026-01-17 16:33:21,240 - INFO - Executed maghrib with audio: 
+2026-01-17 16:51:00,013 - INFO - Triggering athkar_elmasa at 2026-01-17 16:51:00.013069
+2026-01-17 17:08:23,799 - INFO - Executed athkar_elmasa with audio: 
+2026-01-17 18:14:00,009 - INFO - Triggering isha at 2026-01-17 18:14:00.009884
+2026-01-17 18:16:21,240 - INFO - Executed isha with audio: 
