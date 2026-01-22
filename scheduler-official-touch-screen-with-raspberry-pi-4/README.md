@@ -12,11 +12,27 @@ The following hardware components are required to run the Islamic Prayer Schedul
 - **OneNineDesign Touch Screen Case**
 - **Official Raspberry Pi USB-C Power Supply** (5.1V / 3A)
 - **DSI Ribbon Cable** (for connecting the touchscreen display to the Raspberry Pi)
-- **SSD or SD card** (at least 32GB) 
+- **SSD or SD card** (at least 32GB)
 
 ## Prerequisites
 - Internet connection
 - Keyboard, mouse, and display (for initial setup)
+
+## How to Connect the Hardware
+
+Follow the steps below to connect the Raspberry Pi and touchscreen correctly.
+
+1. Connect the **DSI ribbon cable** from the Raspberry Pi DSI port to the touchscreen display.
+2. Ensure the ribbon cable orientation is correct and firmly seated.
+3. Mount the Raspberry Pi and touchscreen into the **OneNineDesign Touch Screen Case**.
+4. Connect the **official USB-C power supply** to power on the device.
+
+It should look like the diagram below:
+
+[Hardware Connection Diagram](assets/raspberry-pi-4-with-raspberry-7-inches-touch-screen.png)
+
+
+
 
 ---
 
@@ -155,4 +171,5 @@ After completing all steps, the Islamic Prayer Scheduler will be fully configure
 ## License
 
 Specify your project license here.
+
 
