@@ -3,12 +3,18 @@
 This project provides an Islamic prayer time scheduler designed to run on a Raspberry Pi with a touchscreen. Follow the steps below to properly set up and run the application.
 
 ---
+## Minimum Hardware Requirements
+
+The following hardware components are required to run the Islamic Prayer Scheduler reliably:
+
+- **Raspberry Pi 4 Model B** (minimum 1 GB RAM)
+- **Official Raspberry Pi 7-inch Touchscreen Display**
+- **OneNineDesign Touch Screen Case**
+- **Official Raspberry Pi USB-C Power Supply** (5.1V / 3A)
+- **DSI Ribbon Cable** (for connecting the touchscreen display to the Raspberry Pi)
+- **SSD or SD card** (at least 32GB) 
 
 ## Prerequisites
-
-- Raspberry Pi (recommended: Raspberry Pi 4)
-- SSD or SD card
-- Power supply
 - Internet connection
 - Keyboard, mouse, and display (for initial setup)
 
@@ -149,3 +155,4 @@ After completing all steps, the Islamic Prayer Scheduler will be fully configure
 ## License
 
 Specify your project license here.
+
