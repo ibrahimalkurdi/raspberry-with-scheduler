@@ -151,6 +151,16 @@ sudo systemctl status audio_event_scheduler.service
 ```
 The service should be in an active (running) state.
 
+## Step 10: Running the Prayer Time GUIs
+
+To start the **Prayer Time Countdown GUI** and the **Scheduler Settings GUI**, simply double-click the corresponding icons on the Raspberry Pi Desktop.
+
+Once launched, the applications should appear similar to the images shown below:
+
+![Prayer Time Countdown GUI](assets/athan-app-icon-64.png)
+![Scheduler Settings GUI](assets/athan-settings-app-icon-64.png)
+
+
 
 ---
 
@@ -171,5 +181,6 @@ After completing all steps, the Islamic Prayer Scheduler will be fully configure
 ## License
 
 Specify your project license here.
+
 
 
