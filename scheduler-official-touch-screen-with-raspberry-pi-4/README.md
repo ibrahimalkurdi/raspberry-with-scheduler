@@ -157,8 +157,15 @@ To start the **Prayer Time Countdown GUI** and the **Scheduler Settings GUI**, s
 
 Once launched, the applications should appear similar to the images shown below:
 
-![Prayer Time Countdown GUI](assets/athan-app-icon-64.png)
-![Scheduler Settings GUI](assets/athan-settings-app-icon-64.png)
+
+<p>
+  &nbsp;&nbsp;
+  <img src="assets/athan-app-icon-64.png" alt="Prayer GUI" />
+</p>
+<p>
+  <img src="assets/athan-settings-app-icon-84.png" alt="Scheduler Settings GUI" />
+</p>
+
 
 
 
@@ -181,6 +188,7 @@ After completing all steps, the Islamic Prayer Scheduler will be fully configure
 ## License
 
 Specify your project license here.
+
 
 
 
